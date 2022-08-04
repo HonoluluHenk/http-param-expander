@@ -1,7 +1,7 @@
 {
   "name": "@honoluluhenk/path-param-expander",
   "version": "1.0.0",
-  "description": "FIXME: description",
+  "description": "Expand path parameters for OpenAPI Typescript code generators",
   "main": "index.js",
   "scripts": {
     "build": "tsc --project tsconfig.lib.json",
@@ -13,7 +13,14 @@
     "release": "run-s clean test lint build"
   },
   "keywords": [
-    "FIXME"
+    "openapi",
+    "openapi-generator",
+    "typescript",
+    "typescript-angular",
+    "path-parameter",
+    "expansion",
+    "uritemplate",
+    "rfc 6570"
   ],
   "author": "Christoph Linder",
   "license": "LGPL-2.1-or-later",
