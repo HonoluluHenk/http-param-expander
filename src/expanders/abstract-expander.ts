@@ -30,7 +30,7 @@ export abstract class AbstractExpander implements PathParameterExpander {
     return result;
   }
 
-  protected flattenArray(escapedPrefix: string = '', arr: unknown[], delimiter: string) {
+  protected flattenArray(escapedPrefix: string, arr: unknown[], delimiter: string) {
     const result = arr
       .map(value => `${escapedPrefix}${this.encodeValue(value)}`)
       .join(delimiter);
@@ -55,8 +55,8 @@ export abstract class AbstractExpander implements PathParameterExpander {
       return !value.length;
     }
 
-    if (typeof value === 'object') {
-      for (const key in (value as any)) {
+    if (typeof value === 'object' && value !== null) {
+      for (const key in value) {
         if (Object.prototype.hasOwnProperty.call(value, key)) {
           return false;
         }

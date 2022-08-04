@@ -53,7 +53,7 @@ export class SimpleParamExpander extends AbstractExpander {
     return this.expandPlain(value);
   }
 
-  private expandPlain(value: any) {
+  private expandPlain(value: unknown): string {
     return `${this.encodeValue(String(value))}`;
   }
 }

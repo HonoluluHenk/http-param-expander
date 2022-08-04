@@ -54,7 +54,7 @@ export class MatrixParamExpander extends AbstractExpander {
     return this.expandPlain(encodedName, value);
   }
 
-  private expandPlain(encodedName: string, value: any) {
+  private expandPlain(encodedName: string, value: unknown): string {
     return `;${encodedName}=${this.encodeValue(String(value))}`;
   }
 }
