@@ -22,7 +22,11 @@
     "uritemplate",
     "rfc 6570"
   ],
-  "author": "Christoph Linder",
+  "author": {
+    "name": "Christoph Linder",
+    "email": "npmjs.com@elainemarley.homeip.net",
+    "url": "https://github.com/HonoluluHenk"
+  },
   "license": "LGPL-2.1-or-later",
   "devDependencies": {
     "@types/jest": "^28.1.6",
