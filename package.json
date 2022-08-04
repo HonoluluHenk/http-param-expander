@@ -10,7 +10,7 @@
     "test:watchAll": "jest --watchAll",
     "lint": "eslint src",
     "clean": "rimraf build reports",
-    "release": "run-s clean test lint build"
+    "checks": "run-s clean test lint build"
   },
   "keywords": [
     "openapi",
