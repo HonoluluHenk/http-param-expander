@@ -13,7 +13,14 @@
     "test:watchAll": "jest --watchAll",
     "lint": "eslint src",
     "clean": "rimraf build reports",
-    "checks": "run-s clean test lint build"
+    "prepush": "npm run release:prepare",
+    "release:prepare": "run-s release:prepare:*",
+    "release:prepare:clean": "run-s clean",
+    "release:prepare:check": "run-s test lint",
+    "release:prepare:build": "run-s build",
+    "release:perform": "run-s release:perform:*",
+    "release:perform:pack": "npm pack",
+    "xxxrelease:perform:publish": "npm publish"
   },
   "keywords": [
     "openapi",
