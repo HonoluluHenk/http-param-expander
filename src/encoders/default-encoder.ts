@@ -5,7 +5,7 @@ export class DefaultEncoder implements Encoder {
   private static RESERVED_CHARACTERS = new Set(RESERVED_CHARACTERS);
 
   constructor(
-    opts?: Partial<{ allowReserved: boolean }>
+    opts?: Partial<EncoderOpts>,
   ) {
     this.opts = {
       allowReserved: opts?.allowReserved ?? false,
