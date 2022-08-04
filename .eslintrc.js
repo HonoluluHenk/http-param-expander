@@ -18,6 +18,12 @@ module.exports = {
     plugins: [
         '@typescript-eslint'
     ],
+    ignorePatterns: [
+        ".idea",
+        "build",
+        "node_modules",
+        "reports",
+    ],
     rules: {
         "@typescript-eslint/no-unused-vars": [
             "error",
