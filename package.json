@@ -2,7 +2,10 @@
   "name": "@honoluluhenk/path-param-expander",
   "version": "1.0.1-0",
   "description": "Expand path parameters for OpenAPI Typescript code generators",
-  "main": "index.js",
+  "main": "./build/lib/index.js",
+  "types": "./build/lib/index.d.ts",
+  "files": ["./build/**"],
+
   "scripts": {
     "build": "tsc --project tsconfig.lib.json",
     "test": "jest",
