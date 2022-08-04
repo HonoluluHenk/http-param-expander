@@ -1,5 +1,11 @@
-export interface Encoder {
-  encodeName(key: string, allowReserved: boolean): string;
+export const RESERVED_CHARACTERS = ':/?#[]@!$&\'()*+,;=';
 
-  encodeValue(value: unknown, allowReserved: boolean): string;
+export interface EncoderOpts {
+  allowReserved: boolean;
+}
+
+export interface Encoder {
+  encodeName(key: string): string;
+
+  encodeValue(value: unknown): string;
 }

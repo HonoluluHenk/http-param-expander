@@ -1,1 +1,1 @@
-export * from './uri-encoding-encoder';
+export * from './default-encoder';

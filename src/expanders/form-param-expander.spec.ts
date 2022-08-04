@@ -1,8 +1,8 @@
-import {URIEncodingEncoder} from '../encoders/uri-encoding-encoder';
+import {DefaultEncoder} from '../encoders';
 import {FormParamExpander} from './form-param-expander';
 
 describe('FormParamExpander', () => {
-  const encoder = new URIEncodingEncoder();
+  const encoder = new DefaultEncoder();
 
   const paramName = 'color';
 
@@ -62,7 +62,7 @@ describe('FormParamExpander', () => {
       const actual = expander.expandParameter(paramName, unsupported);
 
       expect(actual)
-        .toEqual('color=Symbol(unsupported)');
+        .toEqual('color=Symbol%28unsupported%29');
 
     });
 
@@ -119,7 +119,7 @@ describe('FormParamExpander', () => {
       const actual = expander.expandParameter(paramName, unsupported);
 
       expect(actual)
-        .toEqual('color=Symbol(unsupported)');
+        .toEqual('color=Symbol%28unsupported%29');
 
     });
 

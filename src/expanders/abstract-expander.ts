@@ -11,11 +11,11 @@ export abstract class AbstractExpander implements PathParameterExpander {
   abstract expandParameter(name: string, value: unknown): string;
 
   protected encodeName(value: string): string {
-    return this.encoder.encodeName(value, this.opts.allowReserved);
+    return this.encoder.encodeName(value);
   }
 
   protected encodeValue(value: unknown): string {
-    return this.encoder.encodeValue(value, this.opts.allowReserved);
+    return this.encoder.encodeValue(value);
   }
 
   protected isPlain(value: unknown): boolean {
