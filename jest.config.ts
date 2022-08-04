@@ -18,7 +18,6 @@ export default {
   clearMocks: true,
 
   // Indicates whether the coverage information should be collected while executing the test
-  // FIXME:
   collectCoverage: true,
   // collectCoverage: false,
 
