@@ -1,6 +1,6 @@
-import {ExpanderOpts} from '../path-parameter-expander';
+import {type ExpanderOpts} from '../path-parameter-expander';
 import {AbstractExpander} from './abstract-expander';
-import {Encoder} from '../encoder';
+import {type Encoder} from '../encoder';
 
 export class LabelParamExpander extends AbstractExpander {
 
@@ -12,7 +12,6 @@ export class LabelParamExpander extends AbstractExpander {
   }
 
   expandParameter(name: string, value: unknown): string {
-    const encodedName = this.encodeName(name);
     if (value === null || value === undefined) {
       return '';
     }

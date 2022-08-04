@@ -1,5 +1,5 @@
-import {ExpanderOpts, PathParameterExpander} from '../path-parameter-expander';
-import {Encoder} from '../encoder';
+import {type ExpanderOpts, type PathParameterExpander} from '../path-parameter-expander';
+import {type Encoder} from '../encoder';
 
 export abstract class AbstractExpander implements PathParameterExpander {
   protected constructor(

@@ -8,8 +8,7 @@ export type PathParameterStyle =
   | 'deepObject'
   ;
 
-export type ExtendedPathParameterStyle = PathParameterStyle | string;
-
+// noinspection JSUnusedGlobalSymbols
 export const PathParameterStyle = {
   matrix: 'matrix' as PathParameterStyle,
   label: 'label' as PathParameterStyle,
@@ -19,3 +18,5 @@ export const PathParameterStyle = {
   pipeDelimited: 'pipeDelimited' as PathParameterStyle,
   deepObject: 'deepObject' as PathParameterStyle,
 } as const;
+
+export type ExtendedPathParameterStyle = PathParameterStyle | string;

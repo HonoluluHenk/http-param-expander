@@ -1,4 +1,4 @@
-import {EncoderOpts} from './encoder';
+import {type EncoderOpts} from './encoder';
 
 export interface PathParameterExpander {
   expandParameter(name: string, value: unknown): string;

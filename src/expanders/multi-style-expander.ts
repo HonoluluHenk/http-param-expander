@@ -1,7 +1,7 @@
 import {ExtendedPathParameterStyle} from '../path-parameter-style';
 import {ExpanderOpts} from '../path-parameter-expander';
 import {MatrixParamExpander} from './matrix-param-expander';
-import {DefaultEncoder} from '../encoders/default-encoder';
+import {DefaultEncoder} from '../encoders';
 import {LabelParamExpander} from './label-param-expander';
 import {Encoder} from '../encoder';
 import {FormParamExpander} from './form-param-expander';
@@ -12,6 +12,7 @@ export class MultiStyleExpander {
     public readonly opts: ExpanderOpts,
     public readonly encoder: Encoder = new DefaultEncoder(opts),
   ) {
+    // nop
   }
 
   expandParameter(name: string, value: unknown, style: ExtendedPathParameterStyle): string {
