@@ -1,0 +1,12 @@
+dist
+reports
+node_modules
+
+# Code Editors
+# IntelliJ
+.idea
+*.iml
+
+# Important files
+!**/.gitkeep
+!**/.gitattributes

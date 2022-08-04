@@ -1,0 +1,12 @@
+dist
+coverage
+node_modules
+
+# Code Editors
+# IntelliJ
+.idea
+*.iml
+
+# Git stuff
+**/*.git
+
