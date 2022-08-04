@@ -1,7 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "dist/app"
+    "outDir": "build/lib"
   },
   "include": [
     "src/**/*.ts"

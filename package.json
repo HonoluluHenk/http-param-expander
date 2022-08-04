@@ -4,11 +4,11 @@
   "description": "FIXME: description",
   "main": "index.js",
   "scripts": {
-    "build": "tsc --project tsconfig.app.json",
+    "build": "tsc --project tsconfig.lib.json",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:watchAll": "jest --watchAll",
-    "clean": "rimraf dist reports"
+    "clean": "rimraf build reports"
   },
   "keywords": [
     "FIXME"
