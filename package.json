@@ -19,8 +19,7 @@
     "release:prepare:clean": "run-s clean",
     "release:prepare:check": "run-s test lint",
     "release:prepare:build": "run-s build",
-    "release:publish": "npm publish --access=public --dry-run",
-    "prepublishOnly": "npm run release:prepare"
+    "release:publish": "npm publish --access=public --dry-run"
   },
   "keywords": [
     "openapi",
