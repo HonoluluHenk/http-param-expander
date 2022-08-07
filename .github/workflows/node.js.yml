@@ -35,6 +35,8 @@ jobs:
       - run: npm run release:prepare
       - name: Publish to NPM repo
         if: ${{ github.ref_type == 'tag' && matrix.node-version == '18.x' }}
-        run: npm run release:publish
+        run: |
+          echo 'registry.npmjs.org/:_authToken=${NPM_TOKEN} > .npmrc
+          npm run release:publish
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
