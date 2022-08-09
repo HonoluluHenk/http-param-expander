@@ -1,7 +1,7 @@
 {
-  "name": "@honoluluhenk/path-param-expander",
+  "name": "@honoluluhenk/http-param-expander",
   "version": "0.0.4",
-  "description": "Expand path parameters for OpenAPI Typescript code generators",
+  "description": "Expand parameters in headers,parameters,forms,matrix,... for OpenAPI Typescript code generators",
   "main": "./build/lib/index.js",
   "types": "./build/lib/index.d.ts",
   "files": [
@@ -29,7 +29,9 @@
     "typescript",
     "typescript-angular",
     "path-parameter",
-    "expansion",
+    "matrix-parameter",
+    "form-parameter",
+    "encoding",
     "uritemplate",
     "rfc 6570"
   ],
@@ -38,13 +40,13 @@
     "email": "npmjs.com@elainemarley.homeip.net",
     "url": "https://github.com/HonoluluHenk"
   },
-  "homepage": "https://github.com/HonoluluHenk/path-param-expander",
+  "homepage": "https://github.com/HonoluluHenk/http-param-expander",
   "bugs": {
-    "url": "https://github.com/HonoluluHenk/path-param-expander/issues"
+    "url": "https://github.com/HonoluluHenk/http-param-expander/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/HonoluluHenk/path-param-expander.git"
+    "url": "https://github.com/HonoluluHenk/http-param-expander.git"
   },
   "license": "LGPL-2.1-or-later",
   "devDependencies": {
