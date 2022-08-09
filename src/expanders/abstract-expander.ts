@@ -1,14 +1,13 @@
-import {type ExpanderOpts, type PathParameterExpander} from '../path-parameter-expander';
+import {type PathParameterExpander} from '../path-parameter-expander';
 import {type Encoder} from '../encoder';
 
 export abstract class AbstractExpander implements PathParameterExpander {
   protected constructor(
-    public readonly opts: Readonly<ExpanderOpts>,
     public readonly encoder: Encoder,
   ) {
   }
 
-  abstract expandParameter(name: string, value: unknown): string;
+  abstract expandParameter(name: string, value: unknown, explode: boolean): string;
 
   protected encodeName(value: string): string {
     return this.encoder.encodeName(value);

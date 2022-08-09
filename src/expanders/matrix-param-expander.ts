@@ -1,17 +1,15 @@
-import {type ExpanderOpts} from '../path-parameter-expander';
 import {AbstractExpander} from './abstract-expander';
 import {type Encoder} from '../encoder';
 
 export class MatrixParamExpander extends AbstractExpander {
 
   constructor(
-    opts: Readonly<ExpanderOpts>,
     encoder: Encoder,
   ) {
-    super(opts, encoder);
+    super(encoder);
   }
 
-  expandParameter(name: string, value: unknown): string {
+  expandParameter(name: string, value: unknown, explode: boolean): string {
     const encodedName = this.encodeName(name);
     if (value === null || value === undefined) {
       return '';
@@ -28,7 +26,7 @@ export class MatrixParamExpander extends AbstractExpander {
     if (Array.isArray(value)) {
       const arr = value;
       const prefix = `;${encodedName}=`;
-      if (this.opts.explode) {
+      if (explode) {
         const result = this.flattenArray(prefix, arr, '');
 
         return result;
@@ -41,7 +39,7 @@ export class MatrixParamExpander extends AbstractExpander {
 
     if (typeof value === 'object') {
       const obj = value;
-      if (this.opts.explode) {
+      if (explode) {
         const result = `${this.flattenObjectExploded(obj, ';', '=', '')}`;
         return result;
       } else {

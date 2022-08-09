@@ -1,43 +1,48 @@
-import {ExtendedPathParameterStyle} from '../path-parameter-style';
-import {ExpanderOpts} from '../path-parameter-expander';
+import {type ExtendedPathParameterStyle} from '../path-parameter-style';
+import {type PathParameterExpander} from '../path-parameter-expander';
 import {MatrixParamExpander} from './matrix-param-expander';
 import {DefaultEncoder} from '../encoders';
 import {LabelParamExpander} from './label-param-expander';
-import {Encoder} from '../encoder';
+import {type Encoder} from '../encoder';
 import {FormParamExpander} from './form-param-expander';
 import {SimpleParamExpander} from './simple-param-expander';
 
 export class MultiStyleExpander {
   constructor(
-    public readonly opts: ExpanderOpts,
-    public readonly encoder: Encoder = new DefaultEncoder(opts),
+    public readonly encoder: Encoder = new DefaultEncoder(),
+    private readonly expanders: Record<ExtendedPathParameterStyle, PathParameterExpander> = {
+      matrix: new MatrixParamExpander(encoder),
+      label: new LabelParamExpander(encoder),
+      form: new FormParamExpander(encoder),
+      simple: new SimpleParamExpander(encoder),
+      spaceDelimited: new SimpleParamExpander(encoder),
+      pipeDelimited: new SimpleParamExpander(encoder),
+      deepObject: new SimpleParamExpander(encoder),
+    },
   ) {
     // nop
   }
 
-  expandParameter(name: string, value: unknown, style: ExtendedPathParameterStyle): string {
-    switch (style) {
-      case 'matrix':
-        return new MatrixParamExpander(this.opts, this.encoder)
-          .expandParameter(name, value);
-      case 'label':
-        return new LabelParamExpander(this.opts, this.encoder)
-          .expandParameter(name, value);
-      case 'form':
-        return new FormParamExpander(this.opts, this.encoder)
-          .expandParameter(name, value);
-      case 'simple':
-        return new SimpleParamExpander(this.opts, this.encoder)
-          .expandParameter(name, value);
-      case 'spaceDelimited':
-        return `FIXME: implement: ${style}, name:${name}`;
-      case 'pipeDelimited':
-        return `FIXME: implement: ${style}, name:${name}`;
-      case 'deepObject':
-        return `FIXME: implement: ${style}, name:${name}`;
-      default:
-        return `FIXME: implement extended style: ${style}, name:${name}`;
+  withExpander(style: ExtendedPathParameterStyle, encoder: PathParameterExpander): MultiStyleExpander {
+    return new MultiStyleExpander(
+      this.encoder,
+      {
+        ...this.expanders,
+        [style]: encoder,
+      },
+    );
+  }
+
+
+  expandParameter(name: string, value: unknown, style: ExtendedPathParameterStyle, explode: boolean): string {
+    const expander = this.expanders[style];
+    if (!expander) {
+      throw Error(`No expander found implemented: ${style}`);
     }
+
+    const result = expander.expandParameter(name, value, explode);
+
+    return result;
   }
 
 }

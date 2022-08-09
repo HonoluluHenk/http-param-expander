@@ -1,17 +1,15 @@
-import {type ExpanderOpts} from '../path-parameter-expander';
 import {AbstractExpander} from './abstract-expander';
 import {type Encoder} from '../encoder';
 
 export class LabelParamExpander extends AbstractExpander {
 
   constructor(
-    opts: Readonly<ExpanderOpts>,
     encoder: Encoder,
   ) {
-    super(opts, encoder);
+    super(encoder);
   }
 
-  expandParameter(name: string, value: unknown): string {
+  expandParameter(name: string, value: unknown, explode: boolean): string {
     if (value === null || value === undefined) {
       return '';
     }
@@ -27,7 +25,7 @@ export class LabelParamExpander extends AbstractExpander {
     if (Array.isArray(value)) {
       const arr = value;
       const prefix = `.`;
-      if (this.opts.explode) {
+      if (explode) {
         const result = this.flattenArray(prefix, arr, '');
 
         return result;
@@ -40,7 +38,7 @@ export class LabelParamExpander extends AbstractExpander {
 
     if (typeof value === 'object') {
       const obj = value;
-      if (this.opts.explode) {
+      if (explode) {
         const result = `${this.flattenObjectExploded(obj, '.', '=', '')}`;
         return result;
       } else {

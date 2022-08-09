@@ -1,10 +1,4 @@
-import {type EncoderOpts} from './encoder';
-
+// FIXME: is this still a "Path" parameter expander?
 export interface PathParameterExpander {
-  expandParameter(name: string, value: unknown): string;
-}
-
-// FIXME: sollte das als Parameter fuer expandParameter uebergeben werden?
-export interface ExpanderOpts extends EncoderOpts {
-  explode: boolean;
+  expandParameter(name: string, value: unknown, explode: boolean): string;
 }
