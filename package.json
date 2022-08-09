@@ -36,6 +36,14 @@
     "email": "npmjs.com@elainemarley.homeip.net",
     "url": "https://github.com/HonoluluHenk"
   },
+  "homepage": "https://github.com/HonoluluHenk/path-param-expander",
+  "bugs": {
+    "url": "https://github.com/HonoluluHenk/path-param-expander/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HonoluluHenk/path-param-expander.git"
+  },
   "license": "LGPL-2.1-or-later",
   "devDependencies": {
     "@types/jest": "^28.1.6",
