@@ -1,6 +1,6 @@
 {
   "name": "@honoluluhenk/http-param-expander",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Expand parameters in headers,parameters,forms,matrix,... for OpenAPI Typescript code generators",
   "main": "./build/lib/index.js",
   "types": "./build/lib/index.d.ts",
