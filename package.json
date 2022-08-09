@@ -13,12 +13,14 @@
     "test:watch": "jest --watch",
     "test:watchAll": "jest --watchAll",
     "lint": "eslint src",
-    "clean": "rimraf build reports",
+    "clean": "rimraf build dist reports",
     "prepush": "npm run release:prepare",
+    "prepack": "mkdir dist",
     "release:prepare": "run-s release:prepare:*",
     "release:prepare:clean": "run-s clean",
     "release:prepare:check": "run-s test lint",
     "release:prepare:build": "run-s build",
+    "release:prepare:package": "npm pack --pack-destination ./dist",
     "release:publish": "npm publish --access=public"
   },
   "keywords": [
