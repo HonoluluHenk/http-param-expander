@@ -82,6 +82,8 @@ console.log(expanded);
 ## Changelog
 See [releases][releases-url]
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 ## Roadmap
 
 - [ ] Implement expander for deepObject style
