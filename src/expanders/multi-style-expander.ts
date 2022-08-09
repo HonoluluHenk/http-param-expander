@@ -1,5 +1,5 @@
 import {type ExtendedPathParameterStyle} from '../path-parameter-style';
-import {Parameter, type PathParameterExpander} from '../path-parameter-expander';
+import {Parameter, type ParameterExpander} from '../parameter-expander';
 import {MatrixParamExpander} from './matrix-param-expander';
 import {DefaultEncoder} from '../encoders';
 import {LabelParamExpander} from './label-param-expander';
@@ -10,7 +10,7 @@ import {SimpleParamExpander} from './simple-param-expander';
 export class MultiStyleExpander {
   constructor(
     public readonly encoder: Encoder = new DefaultEncoder(),
-    private readonly expanders: Record<ExtendedPathParameterStyle, PathParameterExpander> = {
+    private readonly expanders: Record<ExtendedPathParameterStyle, ParameterExpander> = {
       matrix: new MatrixParamExpander(encoder),
       label: new LabelParamExpander(encoder),
       form: new FormParamExpander(encoder),
@@ -23,7 +23,7 @@ export class MultiStyleExpander {
     // nop
   }
 
-  withExpander(style: ExtendedPathParameterStyle, encoder: PathParameterExpander): MultiStyleExpander {
+  withExpander(style: ExtendedPathParameterStyle, encoder: ParameterExpander): MultiStyleExpander {
     return new MultiStyleExpander(
       this.encoder,
       {

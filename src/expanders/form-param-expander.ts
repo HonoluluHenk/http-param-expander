@@ -1,6 +1,6 @@
 import {AbstractExpander} from './abstract-expander';
 import {type Encoder} from '../encoder';
-import {Parameter} from '../path-parameter-expander';
+import {Parameter} from '../parameter-expander';
 
 export class FormParamExpander extends AbstractExpander {
 
