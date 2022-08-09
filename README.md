@@ -34,7 +34,6 @@ Make your life easier with HTTP parameter encoding for typescript projects!
 
 
 
-<!-- ABOUT THE PROJECT -->
 ## About The Project
 
 This Library aims to make your life easier with HTTP parameter encoding for typescript projects:
@@ -79,9 +78,9 @@ console.log(expanded);
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+## Changelog
+See [releases][releases-url]
 
-
-<!-- ROADMAP -->
 ## Roadmap
 
 - [ ] Implement expander for deepObject style
@@ -109,16 +108,14 @@ Don't forget to give the project a star! Thanks again!
 
 
 
-<!-- LICENSE -->
 ## License
 
-Distributed under the Lesser GPL-2.1 (LGPL-2.1) License. See `LICENSE.txt` for more information.
+Distributed under the Lesser Gnu Public License 2.1 (LGPL-2.1) License. See [`LICENSE`](LICENSE) for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
-<!-- CONTACT -->
 ## Contact
 
 Christoph Linder - post@christoph-linder.ch
@@ -129,7 +126,6 @@ Project Link: [https://github.com/HonoluluHenk/http-param-expander](https://gith
 
 
 
-<!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
 * The [OpenAPI Initiative](https://www.openapis.org/) Project for their specifications and good generator tools
@@ -146,6 +142,7 @@ Project Link: [https://github.com/HonoluluHenk/http-param-expander](https://gith
 [stars-url]: https://github.com/HonoluluHenk/http-param-expander/stargazers
 [issues-shield]: https://img.shields.io/github/issues/HonoluluHenk/http-param-expander.svg?style=for-the-badge
 [issues-url]: https://github.com/HonoluluHenk/http-param-expander/issues
+[releases-url]: https://github.com/HonoluluHenk/http-param-expander/releases
 [license-shield]: https://img.shields.io/github/license/HonoluluHenk/http-param-expander.svg?style=for-the-badge
 [license-url]: https://github.com/HonoluluHenk/http-param-expander/blob/master/LICENSE.txt
 [Workflow-build-shield]: https://github.com/HonoluluHenk/http-param-expander/actions/workflows/build-and-publish.yml/badge.svg?branch=main
