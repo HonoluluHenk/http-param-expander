@@ -1,15 +1,15 @@
 import {type ExtendedParameterStyle} from '../parameter-style';
 import {Parameter, type ParameterExpander} from '../parameter-expander';
 import {MatrixParamExpander} from './matrix-param-expander';
-import {DefaultEncoder} from '../encoders';
 import {LabelParamExpander} from './label-param-expander';
 import {type Encoder} from '../encoder';
 import {FormParamExpander} from './form-param-expander';
 import {SimpleParamExpander} from './simple-param-expander';
+import {URIComponentEncoder} from '../encoders/uri-component-encoder';
 
 export class MultiStyleExpander {
   constructor(
-    public readonly encoder: Encoder = new DefaultEncoder(),
+    public readonly encoder: Encoder = new URIComponentEncoder(),
     private readonly expanders: Record<ExtendedParameterStyle, ParameterExpander> = {
       matrix: new MatrixParamExpander(encoder),
       label: new LabelParamExpander(encoder),

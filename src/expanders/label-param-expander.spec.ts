@@ -1,8 +1,8 @@
-import {DefaultEncoder} from '../encoders';
 import {LabelParamExpander} from './label-param-expander';
+import {URIComponentEncoder} from '../encoders/uri-component-encoder';
 
 describe('LabelParamExpander', () => {
-  const encoder = new DefaultEncoder();
+  const encoder = new URIComponentEncoder();
   const expander = new LabelParamExpander(encoder);
   const name = 'color';
 
@@ -60,7 +60,7 @@ describe('LabelParamExpander', () => {
       const actual = expander.expand({name, value: unsupported, explode});
 
       expect(actual)
-        .toEqual('.Symbol%28unsupported%29');
+        .toEqual('.Symbol(unsupported)');
 
     });
 
@@ -115,7 +115,7 @@ describe('LabelParamExpander', () => {
       const actual = expander.expand({name, value: unsupported, explode});
 
       expect(actual)
-        .toEqual('.Symbol%28unsupported%29');
+        .toEqual('.Symbol(unsupported)');
 
     });
 

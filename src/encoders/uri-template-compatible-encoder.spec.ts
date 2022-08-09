@@ -1,6 +1,6 @@
-import {DefaultEncoder} from './default-encoder';
+import {URITeplateCompatibleEncoder} from './uri-template-compatible-encoder';
 
-describe('DefaultEncoder', () => {
+describe('URITeplateCompatibleEncoder', () => {
   const reserved = [
     [':', '%3A'],
     ['/', '%2F'],
@@ -22,8 +22,15 @@ describe('DefaultEncoder', () => {
     ['=', '%3D'],
   ];
 
+  const allTestedChars = Array(255)
+    .fill(0)
+    .map((_, i) => String.fromCharCode(i));
+
+  const rawAllowed = allTestedChars.filter(c => !reserved.map(e => e[0]).includes(c));
+
+
   describe('parses default options', () => {
-    const encoder = new DefaultEncoder();
+    const encoder = new URITeplateCompatibleEncoder();
     const actual = encoder.opts;
 
     expect(actual)
@@ -31,7 +38,7 @@ describe('DefaultEncoder', () => {
   });
 
   describe('using allowReserved = false', () => {
-    const encoder = new DefaultEncoder({allowReserved: false});
+    const encoder = new URITeplateCompatibleEncoder({allowReserved: false});
 
     it.each(reserved)('encodes reserved characters in name: %s', (raw, escaped) => {
       const actual = encoder.encodeName(raw);
@@ -46,10 +53,29 @@ describe('DefaultEncoder', () => {
       expect(actual)
         .toEqual(escaped);
     });
+
+
+    it( `returns the raw input for name: %s`, () => {
+      for(const c of rawAllowed) {
+        const actual = encoder.encodeName(c);
+
+        expect(actual)
+          .toEqual(c);
+      }
+    });
+
+    it( `returns the raw input for value: %s`, () => {
+      for(const c of rawAllowed) {
+        const actual = encoder.encodeValue(c);
+
+        expect(actual)
+          .toEqual(c);
+      }
+    });
   });
 
   describe('using allowReserved = true', () => {
-    const encoder = new DefaultEncoder({allowReserved: true});
+    const encoder = new URITeplateCompatibleEncoder({allowReserved: true});
 
     it.each(reserved)('passes all characters in name: %s', (raw, _ignored) => {
       const actual = encoder.encodeName(raw);
@@ -65,4 +91,5 @@ describe('DefaultEncoder', () => {
         .toEqual(raw);
     });
   });
+
 });

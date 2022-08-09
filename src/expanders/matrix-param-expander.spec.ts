@@ -1,8 +1,8 @@
 import {MatrixParamExpander} from './matrix-param-expander';
-import {DefaultEncoder} from '../encoders';
+import {URIComponentEncoder} from '../encoders/uri-component-encoder';
 
 describe('MatrixParamExpander', () => {
-  const encoder = new DefaultEncoder();
+  const encoder = new URIComponentEncoder();
   const expander = new MatrixParamExpander(encoder);
   const name = 'color';
 
@@ -60,7 +60,7 @@ describe('MatrixParamExpander', () => {
       const actual = expander.expand({name, value: unsupported, explode});
 
       expect(actual)
-        .toEqual(';color=Symbol%28unsupported%29');
+        .toEqual(';color=Symbol(unsupported)');
 
     });
 
@@ -115,7 +115,7 @@ describe('MatrixParamExpander', () => {
       const actual = expander.expand({name, value: unsupported, explode});
 
       expect(actual)
-        .toEqual(';color=Symbol%28unsupported%29');
+        .toEqual(';color=Symbol(unsupported)');
 
     });
 

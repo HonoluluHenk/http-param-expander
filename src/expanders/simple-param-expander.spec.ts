@@ -1,8 +1,8 @@
-import {DefaultEncoder} from '../encoders';
 import {SimpleParamExpander} from './simple-param-expander';
+import {URIComponentEncoder} from '../encoders/uri-component-encoder';
 
 describe('SimpleParamExpander', () => {
-  const encoder = new DefaultEncoder();
+  const encoder = new URIComponentEncoder();
   const expander = new SimpleParamExpander(encoder);
   const name = 'color';
 
@@ -60,7 +60,7 @@ describe('SimpleParamExpander', () => {
       const actual = expander.expand({name, value: unsupported, explode});
 
       expect(actual)
-        .toEqual('Symbol%28unsupported%29');
+        .toEqual('Symbol(unsupported)');
 
     });
 
@@ -115,7 +115,7 @@ describe('SimpleParamExpander', () => {
       const actual = expander.expand({name, value: unsupported, explode});
 
       expect(actual)
-        .toEqual('Symbol%28unsupported%29');
+        .toEqual('Symbol(unsupported)');
 
     });
 

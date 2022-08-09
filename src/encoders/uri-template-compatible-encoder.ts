@@ -1,6 +1,6 @@
 import {type Encoder, type EncoderOpts, RESERVED_CHARACTERS} from '../encoder';
 
-export class DefaultEncoder implements Encoder {
+export class URITeplateCompatibleEncoder implements Encoder {
   public readonly opts: Readonly<Required<EncoderOpts>>;
   private static RESERVED_CHARACTERS = new Set(RESERVED_CHARACTERS);
 
@@ -33,7 +33,7 @@ export class DefaultEncoder implements Encoder {
   }
 
   private escapeReservedChar(c: string) {
-    if (DefaultEncoder.RESERVED_CHARACTERS.has(c)) {
+    if (URITeplateCompatibleEncoder.RESERVED_CHARACTERS.has(c)) {
       return '%' + c.charCodeAt(0).toString(16).toUpperCase();
     }
 
