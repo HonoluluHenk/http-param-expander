@@ -1,5 +1,6 @@
 import {AbstractExpander} from './abstract-expander';
 import {type Encoder} from '../encoder';
+import {Parameter} from '../path-parameter-expander';
 
 export class MatrixParamExpander extends AbstractExpander {
 
@@ -9,24 +10,24 @@ export class MatrixParamExpander extends AbstractExpander {
     super(encoder);
   }
 
-  expandParameter(name: string, value: unknown, explode: boolean): string {
-    const encodedName = this.encodeName(name);
-    if (value === null || value === undefined) {
+  expand(param: Readonly<Parameter>): string {
+    const encodedName = this.encodeName(param.name);
+    if (param.value === null || param.value === undefined) {
       return '';
     }
 
-    if (this.isEmpty(value)) {
+    if (this.isEmpty(param.value)) {
       return `;${encodedName}`;
     }
 
-    if (this.isPlain(value)) {
-      return this.expandPlain(encodedName, value);
+    if (this.isPlain(param.value)) {
+      return this.expandPlain(encodedName, param.value);
     }
 
-    if (Array.isArray(value)) {
-      const arr = value;
+    if (Array.isArray(param.value)) {
+      const arr = param.value;
       const prefix = `;${encodedName}=`;
-      if (explode) {
+      if (param.explode) {
         const result = this.flattenArray(prefix, arr, '');
 
         return result;
@@ -37,9 +38,9 @@ export class MatrixParamExpander extends AbstractExpander {
       }
     }
 
-    if (typeof value === 'object') {
-      const obj = value;
-      if (explode) {
+    if (typeof param.value === 'object') {
+      const obj = param.value;
+      if (param.explode) {
         const result = `${this.flattenObjectExploded(obj, ';', '=', '')}`;
         return result;
       } else {
@@ -49,7 +50,7 @@ export class MatrixParamExpander extends AbstractExpander {
     }
 
     // unsupported value type, best effort
-    return this.expandPlain(encodedName, value);
+    return this.expandPlain(encodedName, param.value);
   }
 
   private expandPlain(encodedName: string, value: unknown): string {

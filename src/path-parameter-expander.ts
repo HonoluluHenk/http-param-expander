@@ -1,4 +1,10 @@
 // FIXME: is this still a "Path" parameter expander?
+export interface Parameter {
+  name: string,
+  value: unknown,
+  explode: boolean,
+}
+
 export interface PathParameterExpander {
-  expandParameter(name: string, value: unknown, explode: boolean): string;
+  expand(param: Readonly<Parameter>): string;
 }

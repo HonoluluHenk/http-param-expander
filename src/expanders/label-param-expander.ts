@@ -1,5 +1,6 @@
 import {AbstractExpander} from './abstract-expander';
 import {type Encoder} from '../encoder';
+import {Parameter} from '../path-parameter-expander';
 
 export class LabelParamExpander extends AbstractExpander {
 
@@ -9,23 +10,23 @@ export class LabelParamExpander extends AbstractExpander {
     super(encoder);
   }
 
-  expandParameter(name: string, value: unknown, explode: boolean): string {
-    if (value === null || value === undefined) {
+  expand(param: Readonly<Parameter>): string {
+    if (param.value === null || param.value === undefined) {
       return '';
     }
 
-    if (this.isEmpty(value)) {
+    if (this.isEmpty(param.value)) {
       return `.`;
     }
 
-    if (this.isPlain(value)) {
-      return this.expandPlain(value);
+    if (this.isPlain(param.value)) {
+      return this.expandPlain(param.value);
     }
 
-    if (Array.isArray(value)) {
-      const arr = value;
+    if (Array.isArray(param.value)) {
+      const arr = param.value;
       const prefix = `.`;
-      if (explode) {
+      if (param.explode) {
         const result = this.flattenArray(prefix, arr, '');
 
         return result;
@@ -36,9 +37,9 @@ export class LabelParamExpander extends AbstractExpander {
       }
     }
 
-    if (typeof value === 'object') {
-      const obj = value;
-      if (explode) {
+    if (typeof param.value === 'object') {
+      const obj = param.value;
+      if (param.explode) {
         const result = `${this.flattenObjectExploded(obj, '.', '=', '')}`;
         return result;
       } else {
@@ -48,7 +49,7 @@ export class LabelParamExpander extends AbstractExpander {
     }
 
     // unsupported value type, best effort
-    return this.expandPlain(value);
+    return this.expandPlain(param.value);
   }
 
   private expandPlain(value: unknown): string {

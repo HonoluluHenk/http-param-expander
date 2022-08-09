@@ -1,5 +1,5 @@
 import {type ExtendedPathParameterStyle} from '../path-parameter-style';
-import {type PathParameterExpander} from '../path-parameter-expander';
+import {Parameter, type PathParameterExpander} from '../path-parameter-expander';
 import {MatrixParamExpander} from './matrix-param-expander';
 import {DefaultEncoder} from '../encoders';
 import {LabelParamExpander} from './label-param-expander';
@@ -34,13 +34,13 @@ export class MultiStyleExpander {
   }
 
 
-  expandParameter(name: string, value: unknown, style: ExtendedPathParameterStyle, explode: boolean): string {
+  expandParameter(param: Readonly<Parameter>, style: ExtendedPathParameterStyle): string {
     const expander = this.expanders[style];
     if (!expander) {
       throw Error(`No expander found implemented: ${style}`);
     }
 
-    const result = expander.expandParameter(name, value, explode);
+    const result = expander.expand(param);
 
     return result;
   }

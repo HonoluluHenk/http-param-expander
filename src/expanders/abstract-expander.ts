@@ -1,4 +1,4 @@
-import {type PathParameterExpander} from '../path-parameter-expander';
+import {type Parameter, type PathParameterExpander} from '../path-parameter-expander';
 import {type Encoder} from '../encoder';
 
 export abstract class AbstractExpander implements PathParameterExpander {
@@ -7,7 +7,7 @@ export abstract class AbstractExpander implements PathParameterExpander {
   ) {
   }
 
-  abstract expandParameter(name: string, value: unknown, explode: boolean): string;
+  abstract expand(param: Readonly<Parameter>): string;
 
   protected encodeName(value: string): string {
     return this.encoder.encodeName(value);
