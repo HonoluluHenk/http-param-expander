@@ -9,7 +9,7 @@ Make your life easier with HTTP parameter encoding for typescript/javascript pro
 [![MIT License][license-shield]][license-url]
 
 [![CI][Workflow-build-shield]][Workflow-build-url]
-[![CI][npm-package-shield]][npm-package-shield-url]
+[![NPM][npm-package-shield]][npm-package-shield-url]
 
 
 <details>
