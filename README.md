@@ -9,6 +9,7 @@ Make your life easier with HTTP parameter encoding for typescript/javascript pro
 [![MIT License][license-shield]][license-url]
 
 [![CI][Workflow-build-shield]][Workflow-build-url]
+[![CI][npm-package-shield]][npm-package-shield-url]
 
 
 <details>
@@ -146,6 +147,8 @@ Project Link: [https://github.com/HonoluluHenk/http-param-expander](https://gith
 [releases-url]: https://github.com/HonoluluHenk/http-param-expander/releases
 [license-shield]: https://img.shields.io/github/license/HonoluluHenk/http-param-expander.svg?style=for-the-badge
 [license-url]: https://github.com/HonoluluHenk/http-param-expander/blob/master/LICENSE.txt
+[npm-package-shield]: https://badge.fury.io/js/@honoluluhenk%2Fhttp-param-expander.svg
+[npm-package-shield-url]: https://badge.fury.io/js/@honoluluhenk%2Fhttp-param-expander
 [Workflow-build-shield]: https://github.com/HonoluluHenk/http-param-expander/actions/workflows/build-and-publish.yml/badge.svg?branch=main
 [Workflow-build-url]: https://github.com/HonoluluHenk/http-param-expander/actions/workflows/build-and-publish.yml
 [stackoverflow-matrix-params-url]: https://stackoverflow.com/questions/2048121/url-matrix-parameters-vs-query-parameters
