@@ -154,4 +154,4 @@ Project Link: [https://github.com/HonoluluHenk/http-param-expander](https://gith
 [Workflow-build-url]: https://github.com/HonoluluHenk/http-param-expander/actions/workflows/build-and-publish.yml
 [stackoverflow-matrix-params-url]: https://stackoverflow.com/questions/2048121/url-matrix-parameters-vs-query-parameters
 [oracle-jaxrs-url]: https://www.oracle.com/technical-resources/articles/java/jax-rs.html
-[openapi-parameter-styles-url]: https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.2.md#parameterStyle
+[openapi-parameter-styles-url]: https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#parameterObject
