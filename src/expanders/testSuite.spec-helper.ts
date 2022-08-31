@@ -6,9 +6,9 @@ export function testSuite(
   expanderFactory: () => AbstractExpander,
   values: {
     paramName: string,
-    simple: string;
-    array: string[];
-    object: Record<string, unknown>;
+    simple: unknown;
+    array: unknown[];
+    object: Record<string | number | symbol, unknown>;
     unsupported: unknown;
   },
   assertions: {
