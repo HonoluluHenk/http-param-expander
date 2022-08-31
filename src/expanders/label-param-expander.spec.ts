@@ -1,123 +1,34 @@
-import {LabelParamExpander} from './label-param-expander';
 import {URIComponentEncoder} from '../encoders/uri-component-encoder';
+import {LabelParamExpander} from './label-param-expander';
+import {testSuite} from './testSuite.spec-helper';
 
 describe('LabelParamExpander', () => {
-  const encoder = new URIComponentEncoder();
-  const expander = new LabelParamExpander(encoder);
-  const name = 'color';
-
-  const string = 'blue';
-  const array = ['blue', 'black', 'brown'];
-  const object = {'R': 100, 'G': 200, 'B': 150};
-  const unsupported: any = Symbol('unsupported');
-
-  describe('not exploded', () => {
-    const explode = false;
-
-    it.each([
-      null,
-      undefined,
-    ])('returns nothing for nullish: %s', (param) => {
-      const actual = expander.expand({name, value: param, explode});
-
-      expect(actual)
-        .toEqual('');
-    });
-
-    it.each([
-      '',
-      [],
-      {},
-    ])('expands to just the parameter name on empty value: %s', (param) => {
-      const actual = expander.expand({name, value: param, explode});
-
-      expect(actual)
-        .toEqual('.');
-    });
-
-    it('expands a simple value', () => {
-      const actual = expander.expand({name, value: string, explode});
-
-      expect(actual)
-        .toEqual('.blue');
-    });
-
-    it('expands an array', () => {
-      const actual = expander.expand({name, value: array, explode});
-
-      expect(actual)
-        .toEqual('.blue.black.brown');
-    });
-
-    it('expands an object', () => {
-      const actual = expander.expand({name, value: object, explode});
-
-      expect(actual)
-        .toEqual('.R.100.G.200.B.150');
-    });
-
-    it('expands unsupported', () => {
-      const actual = expander.expand({name, value: unsupported, explode});
-
-      expect(actual)
-        .toEqual('.Symbol(unsupported)');
-
-    });
-
-  });
-
-  describe('exploded', () => {
-    const explode = true;
-
-    it.each([
-      null,
-      undefined,
-    ])('returns nothing for nullish: %s', (param) => {
-      const actual = expander.expand({name, value: param, explode});
-
-      expect(actual)
-        .toEqual('');
-    });
-
-    it.each([
-      '',
-      [],
-      {},
-    ])('expands to just the parameter name on empty value: %s', (param) => {
-      const actual = expander.expand({name, value: param, explode});
-
-      expect(actual)
-        .toEqual('.');
-    });
-
-    it('expands a simple value', () => {
-      const actual = expander.expand({name, value: string, explode});
-
-      expect(actual)
-        .toEqual('.blue');
-    });
-
-    it('expands an array', () => {
-      const actual = expander.expand({name, value: array, explode});
-
-      expect(actual)
-        .toEqual('.blue.black.brown');
-    });
-
-    it('expands an object', () => {
-      const actual = expander.expand({name, value: object, explode});
-
-      expect(actual)
-        .toEqual('.R=100.G=200.B=150');
-    });
-
-    it('expands unsupported', () => {
-      const actual = expander.expand({name, value: unsupported, explode});
-
-      expect(actual)
-        .toEqual('.Symbol(unsupported)');
-
-    });
-
-  });
+  testSuite(
+    () => new LabelParamExpander(new URIComponentEncoder()),
+    {
+      paramName: 'nameIgnored',
+      simple: 'blue',
+      array: ['blue', 'black', 'brown'],
+      object: {'R': 100, 'G': 200, 'B': 150},
+      unsupported: Symbol('unsupported'),
+    },
+    {
+      notExploded: {
+        onNullish: actual => expect(actual).toEqual(''),
+        onEmptyValue: actual => expect(actual).toEqual('.'),
+        onSimpleValue: actual => expect(actual).toEqual('.blue'),
+        onArray: actual => expect(actual).toEqual('.blue.black.brown'),
+        onObject: actual => expect(actual).toEqual('.R.100.G.200.B.150'),
+        onUnsupported: actual => expect(actual).toEqual('.Symbol(unsupported)'),
+      },
+      exploded: {
+        onNullish: actual => expect(actual).toEqual(''),
+        onEmptyValue: actual => expect(actual).toEqual('.'),
+        onSimpleValue: actual => expect(actual).toEqual('.blue'),
+        onArray: actual => expect(actual).toEqual('.blue.black.brown'),
+        onObject: actual => expect(actual).toEqual('.R=100.G=200.B=150'),
+        onUnsupported: actual => expect(actual).toEqual('.Symbol(unsupported)'),
+      },
+    },
+  )
 });
