@@ -1,12 +1,7 @@
 import {Encoder} from '../encoder';
 
 export class URIComponentEncoder implements Encoder {
-  encodeName(key: string): string {
-    return encodeURIComponent(String(key));
+  encode(value: string): string {
+    return encodeURIComponent(value);
   }
-
-  encodeValue(value: unknown): string {
-    return encodeURIComponent(String(value));
-  }
-
 }

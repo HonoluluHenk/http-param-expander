@@ -1,33 +1,53 @@
-import {URIComponentEncoder} from '../encoders/uri-component-encoder';
+import {PrimitivesFormatter} from '../formatters';
 import {LabelParamExpander} from './label-param-expander';
 import {testSuite} from './testSuite.spec-helper';
 
 describe('LabelParamExpander', () => {
   testSuite(
-    () => new LabelParamExpander(new URIComponentEncoder()),
+    () => new LabelParamExpander(new PrimitivesFormatter()),
     {
-      paramName: 'nameIgnored',
+      paramName: 'color',
       simple: 'blue',
       array: ['blue', 'black', 'brown'],
+      arrayWithEmpties: ['blue', '', 'black', null, 'brown', undefined],
       object: {'R': 100, 'G': 200, 'B': 150},
+      objectWithEmpties: {'R': 100, 'magenta': '', 'G': 200, 'null': null, 'B': 150, 'undefined': undefined},
       unsupported: Symbol('unsupported'),
     },
     {
-      notExploded: {
-        onNullish: actual => expect(actual).toEqual(''),
-        onEmptyValue: actual => expect(actual).toEqual('.'),
-        onSimpleValue: actual => expect(actual).toEqual('.blue'),
-        onArray: actual => expect(actual).toEqual('.blue.black.brown'),
-        onObject: actual => expect(actual).toEqual('.R.100.G.200.B.150'),
-        onUnsupported: actual => expect(actual).toEqual('.Symbol(unsupported)'),
+      nullish: {
+        onNullishExpect: '',
       },
-      exploded: {
-        onNullish: actual => expect(actual).toEqual(''),
-        onEmptyValue: actual => expect(actual).toEqual('.'),
-        onSimpleValue: actual => expect(actual).toEqual('.blue'),
-        onArray: actual => expect(actual).toEqual('.blue.black.brown'),
-        onObject: actual => expect(actual).toEqual('.R=100.G=200.B=150'),
-        onUnsupported: actual => expect(actual).toEqual('.Symbol(unsupported)'),
+      simple: {
+        onEmptyValueExpect: '.',
+        onSimpleValueExpect: '.blue',
+      },
+      array: {
+        plain: {
+          onEmptyArrayExpect: '',
+          onArrayExpect: '.blue.black.brown',
+          onArrayWithEmptiesExpect: '.blue.black.brown',
+        },
+        exploded: {
+          onEmptyArrayExpect: '',
+          onArrayExpect: '.blue.black.brown',
+          onArrayWithEmptiesExpect: '.blue.black.brown',
+        },
+      },
+      object: {
+        plain: {
+          onEmptyObjectExpect: '',
+          onObjectExpect: '.R.100.G.200.B.150',
+          onObjectWithEmptiesExpect: '.R.100.G.200.B.150',
+        },
+        exploded: {
+          onEmptyObjectExpect: '',
+          onObjectExpect: '.R=100.G=200.B=150',
+          onObjectWithEmptiesExpect: '.R=100.G=200.B=150',
+        },
+      },
+      unsupported: {
+        onUnsupportedExpect: '.Symbol%28unsupported%29',
       },
     },
   )

@@ -1,27 +1,30 @@
-import {type Encoder, type EncoderOpts, RESERVED_CHARACTERS} from '../encoder';
+import {type Encoder, type EncoderOpts} from '../encoder';
 
-export class URITeplateCompatibleEncoder implements Encoder {
-  public readonly opts: Readonly<Required<EncoderOpts>>;
-  private static RESERVED_CHARACTERS = new Set(RESERVED_CHARACTERS);
+export interface URITemplateEncoderOpts extends Partial<EncoderOpts> {
+  reservedCharacters: string,
+}
+
+export class URITemplateCompatibleEncoder implements Encoder {
+  private readonly reservedCharacters: Set<string>;
+
+  public readonly opts: Readonly<Required<URITemplateEncoderOpts>>;
 
   constructor(
-    opts?: Partial<EncoderOpts>,
+    opts: URITemplateEncoderOpts,
   ) {
     this.opts = {
-      allowReserved: opts?.allowReserved ?? false,
+      ...opts,
+      allowReserved: opts.allowReserved ?? false,
     };
+    this.reservedCharacters = new Set(this.opts.reservedCharacters);
   }
 
-  encodeName(key: string): string {
-    return this.encodeValue(key);
-  }
-
-  encodeValue(value: string): string {
+  encode(value: string): string {
     if (this.opts.allowReserved) {
       return String(value);
     }
 
-    return this.percentEscapeReservedCharacters(String(value));
+    return this.percentEscapeReservedCharacters(value);
   }
 
   protected percentEscapeReservedCharacters(text: string): string {
@@ -32,11 +35,12 @@ export class URITeplateCompatibleEncoder implements Encoder {
     return result;
   }
 
-  private escapeReservedChar(c: string) {
-    if (URITeplateCompatibleEncoder.RESERVED_CHARACTERS.has(c)) {
+  protected escapeReservedChar(c: string) {
+    if (this.reservedCharacters.has(c)) {
       return '%' + c.charCodeAt(0).toString(16).toUpperCase();
     }
 
     return c;
   }
+
 }

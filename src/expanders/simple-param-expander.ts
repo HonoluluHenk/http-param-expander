@@ -1,58 +1,23 @@
-import {AbstractExpander} from './abstract-expander';
-import {type Encoder} from '../encoder';
-import {Parameter} from '../parameter-expander';
+import {URITemplateCompatibleEncoder} from '../encoders';
+import {Formatter} from '../formatter';
+import {FOO_RESERVED_CHARACTERS} from '../reserved-characters';
+import {BasicExpander} from './basic-expander';
 
-export class SimpleParamExpander extends AbstractExpander {
+export const SIMPLE_PARAM_RESERVED_CHARACTERS = FOO_RESERVED_CHARACTERS + '';
 
-  constructor(
-    encoder: Encoder,
-  ) {
-    super(encoder);
-  }
+export class SimpleParamExpander<Opts = unknown> extends BasicExpander<Opts> {
 
-  expand(param: Readonly<Parameter>): string {
-    if (param.value === null || param.value === undefined) {
-      return '';
-    }
-
-    if (this.isEmpty(param.value)) {
-      return ``;
-    }
-
-    if (this.isPlain(param.value)) {
-      return this.expandPlain(param.value);
-    }
-
-    if (Array.isArray(param.value)) {
-      const arr = param.value;
-      const prefix = ``;
-      if (param.explode) {
-        const result = this.flattenArray(prefix, arr, ',');
-
-        return result;
-      } else {
-        const result = `${prefix}${this.flattenArray('', arr, ',')}`;
-
-        return result;
-      }
-    }
-
-    if (typeof param.value === 'object') {
-      const obj = param.value;
-      if (param.explode) {
-        const result = `${this.flattenObjectExploded(obj, '', '=', ',')}`;
-        return result;
-      } else {
-        const result = `${this.flattenArray('', this.flattenObjectEntries(obj), ',')}`;
-        return result;
-      }
-    }
-
-    // unsupported value type, best effort
-    return this.expandPlain(param.value);
-  }
-
-  private expandPlain(value: unknown): string {
-    return `${this.encodeValue(String(value))}`;
+  constructor(formatter: Formatter) {
+    super(
+      {
+        encoder: new URITemplateCompatibleEncoder({reservedCharacters: SIMPLE_PARAM_RESERVED_CHARACTERS}),
+        formatter: formatter,
+      },
+      'skip',
+      {
+        variable: '',
+        assignment: '=',
+        listEntry: ',',
+      });
   }
 }
