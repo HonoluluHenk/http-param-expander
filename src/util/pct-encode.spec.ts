@@ -2,7 +2,6 @@ import {pctEncode} from './pct-encode';
 
 describe('pct-encode', () => {
 
-
   describe('multi-byte-chars', () => {
     it.each([
       // 2 bytes

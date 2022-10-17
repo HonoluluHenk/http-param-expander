@@ -24,6 +24,6 @@ export function parseObjectValues<Opts>(
   } else {
     const result = [{name: param.name, values: entries.flatMap(([name, value]) => [name, value])}];
 
-  return result;
+    return result;
   }
 }

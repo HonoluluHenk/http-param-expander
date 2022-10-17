@@ -108,7 +108,6 @@ describe('PrimitivesFormatter', () => {
           .toEqual('0.123456789')
       })
 
-
     })
 
     describe('boolean', () => {

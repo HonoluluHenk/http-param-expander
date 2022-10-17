@@ -3,14 +3,14 @@
 import {RFC6570_ALPHA, RFC6570_DIGIT, RFC6570_RESERVED, RFC6570_UNRESERVED} from './reserved-characters';
 
 describe('reserved-characters', () => {
-  describe("RFC6570_RESERVED_CHARACTERS", () => {
+  describe('RFC6570_RESERVED_CHARACTERS', () => {
     it('contains restricted characters as defined in RFC 6570', () => {
       expect(RFC6570_RESERVED)
         .toEqual(':/?#[]@!$&\'()*+,;=');
     })
   });
 
-  describe("RFC6570_ALPHA", () => {
+  describe('RFC6570_ALPHA', () => {
     it('contains all alphabetic chars', () => {
       expect(RFC6570_ALPHA)
         .toContain('abcdefghijklmnopqrstuvwxyz');
@@ -23,7 +23,7 @@ describe('reserved-characters', () => {
     })
   });
 
-  describe("RFC6570_DIGIT", () => {
+  describe('RFC6570_DIGIT', () => {
     it('contains all numeric chars', () => {
       expect(RFC6570_DIGIT)
         .toContain('0123456789');
@@ -33,7 +33,7 @@ describe('reserved-characters', () => {
     })
   });
 
-  describe("RFC6570_UNRESERVED", () => {
+  describe('RFC6570_UNRESERVED', () => {
     it('contains all alphabetic + numeric + some special chars', () => {
       expect(RFC6570_UNRESERVED)
         .toContain(RFC6570_ALPHA);

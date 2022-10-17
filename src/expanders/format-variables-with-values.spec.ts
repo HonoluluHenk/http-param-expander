@@ -71,9 +71,9 @@ describe('formatVariablesWithValues', function () {
 
   it('joins multiple variables using "sep"', () => {
     const actual = format([
-      {name: 'hello', values: ['world']},
-      {name: 'it', values: ['works', 'like', 'a', 'charm']},
-    ],
+        {name: 'hello', values: ['world']},
+        {name: 'it', values: ['works', 'like', 'a', 'charm']},
+      ],
       {sep: '|'});
 
     expect(actual)

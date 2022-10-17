@@ -22,7 +22,7 @@ export function parseArrayValues<Opts>(
       .map(val => ({name: param.name, values: [val]}));
     return result;
   } else {
-    const result: VariableWithValues[] =[{name: param.name, values}];
+    const result: VariableWithValues[] = [{name: param.name, values}];
     return result;
   }
 }

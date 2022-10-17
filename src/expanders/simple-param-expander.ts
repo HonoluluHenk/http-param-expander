@@ -18,7 +18,7 @@ export class SimpleParamExpander<Opts = unknown> extends BasicExpander<Opts> {
           named: false,
           ifemp: '',
           allow: 'U',
-        }
+        },
       });
   }
 

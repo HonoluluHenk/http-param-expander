@@ -26,7 +26,7 @@ describe('parse-simple-vaplue', () => {
     public formatNested(
       _param: Readonly<Param<unknown, unknown>>,
       _name: string,
-      _value: unknown
+      _value: unknown,
     ): string | null | undefined {
       throw Error('not implemented');
     }
@@ -76,7 +76,6 @@ describe('parse-simple-vaplue', () => {
           },
         ])
     })
-
 
     it('calls the formatter', () => {
       const actual = parseSimpleValue(param, new FixtureFormatter());
