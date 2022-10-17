@@ -1,4 +1,4 @@
-import {checkNonNullish, isNullish} from './is-nullish';
+import {checkNonNullish, isNullish} from './nullish';
 
 describe('is-nullish', () => {
 

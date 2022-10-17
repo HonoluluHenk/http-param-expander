@@ -1,4 +1,4 @@
-import {isNullish} from './is-nullish';
+import {isNullish} from './nullish';
 
 export type Class = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

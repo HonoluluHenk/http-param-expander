@@ -1,4 +1,4 @@
-import {isNullish} from './is-nullish';
+import {isNullish} from './nullish';
 
 export type PossiblyDefined = string | null | undefined;
 
