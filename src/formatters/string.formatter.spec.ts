@@ -1,8 +1,10 @@
-import {Param} from '../expander';
-import {DefaultFormatter} from './default.formatter';
+// noinspection MagicNumberJS
 
-describe('DefaultFormatter', () => {
-  const formatter = new DefaultFormatter();
+import {Param} from '../expander';
+import {StringFormatter} from './string.formatter';
+
+describe('StringFormatter', () => {
+  const formatter = new StringFormatter();
   const paramFixture: Param<string, unknown> = {
     name: 'foo',
     value: '',

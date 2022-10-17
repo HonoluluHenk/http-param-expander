@@ -1,34 +1,43 @@
-import {type Encoder, type EncoderOpts} from '../encoder';
+import {type Encoder} from '../encoder';
+import {RFC6570_RESERVED, RFC6570_UNRESERVED} from '../reserved-characters';
+import {pctEncode} from '../util';
 
-export interface URITemplateEncoderOpts extends Partial<EncoderOpts> {
-  reservedCharacters: string,
+/**
+ * As per RFC 6570:
+ *
+ * <ul>
+ * <li>U: allow characters in the unreserved set.</li>
+ * <li>U+R: allow characters in the union of
+ * (unreserved / reserved / pct- encoding).</li>
+ * </ul>
+ */
+export type AllowedChars = 'U' | 'U+R';
+
+export interface URITemplateEncoderOpts {
+  readonly allowedChars: AllowedChars,
+}
+
+export function parseAllowedChars(allowedChars: AllowedChars): string {
+  switch (allowedChars) {
+    case 'U':
+      return RFC6570_UNRESERVED;
+    case 'U+R':
+      // FIXME: what about "pct-encoded"?
+      return RFC6570_UNRESERVED + RFC6570_RESERVED;
+  }
 }
 
 export class URITemplateCompatibleEncoder implements Encoder {
-  private readonly reservedCharacters: Set<string>;
-
-  public readonly opts: Readonly<Required<URITemplateEncoderOpts>>;
+  private readonly allowedChars: Set<string>;
 
   constructor(
-    opts: URITemplateEncoderOpts,
+    public readonly opts: URITemplateEncoderOpts,
   ) {
-    this.opts = {
-      ...opts,
-      allowReserved: opts.allowReserved ?? false,
-    };
-    this.reservedCharacters = new Set(this.opts.reservedCharacters);
+    this.allowedChars = new Set(parseAllowedChars(opts.allowedChars));
   }
 
   encode(value: string): string {
-    if (this.opts.allowReserved) {
-      return String(value);
-    }
-
-    return this.percentEscapeReservedCharacters(value);
-  }
-
-  protected percentEscapeReservedCharacters(text: string): string {
-    const result = Array.from(text)
+    const result = Array.from(value)
       .map(c => this.escapeReservedChar(c))
       .join('');
 
@@ -36,8 +45,10 @@ export class URITemplateCompatibleEncoder implements Encoder {
   }
 
   protected escapeReservedChar(c: string) {
-    if (this.reservedCharacters.has(c)) {
-      return '%' + c.charCodeAt(0).toString(16).toUpperCase();
+    if (!this.allowedChars.has(c)) {
+      const hex = pctEncode(c);
+
+      return hex;
     }
 
     return c;

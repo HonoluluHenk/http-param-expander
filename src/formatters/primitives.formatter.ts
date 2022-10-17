@@ -3,6 +3,7 @@ import {Formatter} from '../formatter';
 
 export class PrimitivesFormatter<Opts = unknown> implements Formatter<Opts> {
   private static readonly supportedTypes = new Set<string>([
+    'undefined',
     'string',
     'number',
     'boolean',
@@ -17,12 +18,14 @@ export class PrimitivesFormatter<Opts = unknown> implements Formatter<Opts> {
     return result;
   }
 
-  public formatSimple(param: Readonly<Param<unknown, Opts>>): string {
+  public formatSimple(param: Readonly<Param<unknown, Opts>>): string | null | undefined {
     return this.formatNested(param, param.name, param.value);
   }
 
-  public formatNested(param: Readonly<Param<unknown, Opts>>, name: string, value: unknown): string {
+  public formatNested(param: Readonly<Param<unknown, Opts>>, name: string, value: unknown): string | null | undefined {
     switch (typeof value) {
+      case 'undefined':
+        return this.convertUndefinedToString();
       case 'string':
         return this.convertStringToString(value);
       case 'number':
@@ -34,6 +37,10 @@ export class PrimitivesFormatter<Opts = unknown> implements Formatter<Opts> {
       default:
         throw Error(`not supported: ${name}: ${typeof value} = ${JSON.stringify(value)}`);
     }
+  }
+
+  protected convertUndefinedToString(): undefined {
+    return undefined;
   }
 
   protected convertStringToString(value: string): string {

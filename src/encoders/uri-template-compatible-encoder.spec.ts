@@ -1,106 +1,97 @@
-import {FOO_RESERVED_CHARACTERS} from '../reserved-characters';
+// noinspection MagicNumberJS
+
+import {RFC6570_RESERVED, RFC6570_UNRESERVED} from '../reserved-characters';
 import {URITemplateCompatibleEncoder} from './uri-template-compatible-encoder';
 
 describe('URITemplateCompatibleEncoder', () => {
-  const reserved = [
-    [':', '%3A'],
-    ['/', '%2F'],
-    ['?', '%3F'],
-    ['#', '%23'],
-    ['[', '%5B'],
-    [']', '%5D'],
-    ['@', '%40'],
-    ['!', '%21'],
-    ['$', '%24'],
-    ['&', '%26'],
-    ['\'', '%27'],
-    ['(', '%28'],
-    [')', '%29'],
-    ['*', '%2A'],
-    ['+', '%2B'],
-    [',', '%2C'],
-    [';', '%3B'],
-    ['=', '%3D'],
-  ];
-
-  const allTestedChars = Array(255)
+  const latin1 = Array(255)
     .fill(0)
     .map((_, i) => String.fromCharCode(i));
 
-  const rawAllowed = allTestedChars.filter(c => !reserved.map(e => e[0]).includes(c));
+  describe('allowed characters: "U"', () => {
+    const encoder = new URITemplateCompatibleEncoder({
+      allowedChars: 'U',
+    });
 
-  describe('parsing default options', () => {
-    it('defaults allowReserved to false', () => {
-      const encoder = new URITemplateCompatibleEncoder({
-        reservedCharacters: FOO_RESERVED_CHARACTERS,
-      });
+    const REQUIRES_ENCODING = /^[0-9a-zA-Z-._~]$/;
+    const latin1Allowed = latin1.filter(c => c.match(REQUIRES_ENCODING));
+    const latin1RequiresEncoding = latin1.filter(c => !c.match(REQUIRES_ENCODING));
 
-      expect(encoder.opts.allowReserved)
-        .toBe(false);
+    it('sanity check', () => {
+      expect(latin1Allowed)
+        .toHaveLength(66);
+      expect(latin1RequiresEncoding)
+        .toHaveLength((255 - 66));
     })
 
-    it('parses default options', () => {
-      const encoder = new URITemplateCompatibleEncoder({reservedCharacters: FOO_RESERVED_CHARACTERS});
-      const actual = encoder.opts;
+    it.each(latin1RequiresEncoding)('encodes %p', (input) => {
+      const actual = encoder.encode(input);
 
       expect(actual)
-        .toEqual({
-          allowReserved: false,
-          reservedCharacters: FOO_RESERVED_CHARACTERS,
-        });
+        .toMatch(/^(%[0-9a-f]{2})+$/i);
     });
+
+    it.each(latin1Allowed)('passes through %s', (input) => {
+      const actual = encoder.encode(input);
+
+      expect(actual)
+        .toEqual(input);
+    });
+
+    it.each([
+      ['🇯🇵', '%F0%9F%87%AF%F0%9F%87%B5'],
+      ['😀︎', '%F0%9F%98%80%EF%B8%8E'],
+      ['😀️', '%F0%9F%98%80%EF%B8%8F'],
+      ['👨‍👩‍👧‍👦', '%F0%9F%91%A8%E2%80%8D%F0%9F%91%A9%E2%80%8D%F0%9F%91%A7%E2%80%8D%F0%9F%91%A6'],
+    ])('encodes multi-codepoint-character: %s', (input, expected) => {
+      const actual = encoder.encode(input);
+
+      expect(actual)
+        .toEqual(expected);
+    })
   });
 
-  describe('using allowReserved = false', () => {
+  describe('allowed characters: "U+R"', () => {
     const encoder = new URITemplateCompatibleEncoder({
-      allowReserved: false,
-      reservedCharacters: FOO_RESERVED_CHARACTERS,
+      allowedChars: 'U+R',
     });
 
-    it.each(reserved)('encodes reserved characters: %s', (raw, escaped) => {
-      const actual = encoder.encode(raw);
+    const ALLOWED = RFC6570_UNRESERVED + RFC6570_RESERVED;
+    const latin1Allowed = latin1.filter(c => ALLOWED.includes(c));
+    const latin1RequiresEncoding = latin1.filter(c => !ALLOWED.includes(c));
+
+    it('sanity check', () => {
+      expect(latin1Allowed)
+        .toHaveLength(84);
+      expect(latin1RequiresEncoding)
+        .toHaveLength((255 - 84));
+    })
+
+    it.each(latin1RequiresEncoding)('encodes %p', (input) => {
+      const actual = encoder.encode(input);
 
       expect(actual)
-        .toEqual(escaped);
+        .toMatch(/^(%[0-9a-f]{2})+$/i);
     });
 
-    it(`returns the raw input: %s`, () => {
-      for (const c of rawAllowed) {
-        const actual = encoder.encode(c);
-
-        expect(actual)
-          .toEqual(c);
-      }
-    });
-  });
-
-  describe('using allowReserved = true', () => {
-    const encoder = new URITemplateCompatibleEncoder({
-      allowReserved: true,
-      reservedCharacters: FOO_RESERVED_CHARACTERS,
-    });
-
-    it.each(reserved)('passes all characters: %s', (raw, _ignored) => {
-      const actual = encoder.encode(raw);
+    it.each(latin1Allowed)('passes through %s', (input) => {
+      const actual = encoder.encode(input);
 
       expect(actual)
-        .toEqual(raw);
+        .toEqual(input);
     });
 
+    it.each([
+      ['🇯🇵', '%F0%9F%87%AF%F0%9F%87%B5'],
+      ['😀︎', '%F0%9F%98%80%EF%B8%8E'],
+      ['😀️', '%F0%9F%98%80%EF%B8%8F'],
+      ['👨‍👩‍👧‍👦', '%F0%9F%91%A8%E2%80%8D%F0%9F%91%A9%E2%80%8D%F0%9F%91%A7%E2%80%8D%F0%9F%91%A6'],
+    ])('encodes multi-codepoint-character: %s', (input, expected) => {
+      const actual = encoder.encode(input);
+
+      expect(actual)
+        .toEqual(expected);
+    })
   });
-
-  it.each([
-    ['🇯🇵', '🇯🇵'],
-    ['😀︎', '😀︎'],
-    ['😀️', '😀️'],
-    ['👨‍👩‍👧‍👦', '👨‍👩‍👧‍👦'],
-  ])('passes through multi-codepoint-characters since they are not reserved chars: %s', (input, expected) => {
-    const encoder = new URITemplateCompatibleEncoder({reservedCharacters: FOO_RESERVED_CHARACTERS});
-
-    const actual = encoder.encode(input);
-
-    expect(actual)
-      .toEqual(expected);
-  })
 
 });

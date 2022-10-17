@@ -90,20 +90,28 @@ describe('parseArrayValues', () => {
     })
 
     describe('with undef values', () => {
-      const param: Param<string[], unknown> = {
+      const param: Param<(string | null | undefined)[], unknown> = {
         ...paramFixture,
-        value: ['bar', '', 'baz', '', 'banana'],
+        value: ['bar', '', 'baz', null, 'banana', undefined, 'end'],
       }
 
       it.each([
         [
-          true, [{name: 'foo', values: ['bar']}, {name: 'foo', values: ['baz']}, {name: 'foo', values: ['banana']}],
+          true, [
+          {name: 'foo', values: ['bar']},
+          {name: 'foo', values: ['']},
+          {name: 'foo', values: ['baz']},
+          {name: 'foo', values: ['banana']},
+          {name: 'foo', values: ['end']},
+        ],
         ],
         [
-          false, [{name: 'foo', values: ['bar', 'baz', 'banana']}],
+          false, [
+          {name: 'foo', values: ['bar', '', 'baz', 'banana', 'end']},
+        ],
         ],
       ])('skips undef values', (explode, expected) => {
-        const input: Param<string[], unknown> = {
+        const input: Param<(string | null | undefined)[], unknown> = {
           ...param,
           explode,
         }
@@ -118,7 +126,7 @@ describe('parseArrayValues', () => {
   });
 
   describe('with custom formatter', () => {
-    const formatter: Formatter = new class implements Formatter<unknown> {
+    const formatter: Formatter = new class implements Formatter {
       public formatNested(param: Readonly<Param<unknown, unknown>>, name: string, value: unknown): string {
         return `nest:${name}->${value}<`;
       }

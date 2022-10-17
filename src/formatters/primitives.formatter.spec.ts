@@ -1,3 +1,5 @@
+// noinspection MagicNumberJS
+
 import {PrimitivesFormatter} from './primitives.formatter';
 
 describe('PrimitivesFormatter', () => {
@@ -7,7 +9,6 @@ describe('PrimitivesFormatter', () => {
     () => 'a function',
     {foo: 'an object'},
     null,
-    undefined,
   ];
 
   const paramFixture = {
@@ -18,7 +19,7 @@ describe('PrimitivesFormatter', () => {
 
   const converter = new PrimitivesFormatter();
 
-  describe('detection', () => {
+  describe('supports', () => {
     it.each([
       'foo',
       '',
@@ -28,7 +29,8 @@ describe('PrimitivesFormatter', () => {
       false,
       BigInt(123),
       BigInt(0),
-    ])('detects positive: %s', (input) => {
+      undefined,
+    ])('accepts: %s', (input) => {
       const actual = converter.supports({
         value: input,
         ...paramFixture,
@@ -38,7 +40,7 @@ describe('PrimitivesFormatter', () => {
         .toBe(true);
     })
 
-    it.each(REJECTED_VALUES)('detects negative: %s', (input) => {
+    it.each(REJECTED_VALUES)('rejects: %s', (input) => {
       const actual = converter.supports({
         value: input,
         ...paramFixture,
@@ -49,7 +51,20 @@ describe('PrimitivesFormatter', () => {
     })
   });
 
-  describe('conversion', () => {
+  describe('formatting', () => {
+
+    describe('undefined', () => {
+      it('passes through "undefined"', () => {
+        const actual = converter.formatSimple({
+          value: undefined,
+          ...paramFixture,
+        });
+
+        expect(actual)
+          .toBeUndefined()
+      })
+    })
+
     describe('string', () => {
       it('just returns the input', () => {
         const actual = converter.formatSimple({
@@ -93,7 +108,11 @@ describe('PrimitivesFormatter', () => {
           .toEqual('0.123456789')
       })
 
-      it('formats an boolean', () => {
+
+    })
+
+    describe('boolean', () => {
+      it('formats "true"', () => {
         const actual = converter.formatSimple({
           value: true,
           ...paramFixture,
@@ -102,7 +121,18 @@ describe('PrimitivesFormatter', () => {
         expect(actual)
           .toEqual('true')
       })
+      it('formats "false"', () => {
+        const actual = converter.formatSimple({
+          value: false,
+          ...paramFixture,
+        });
 
+        expect(actual)
+          .toEqual('false')
+      })
+    });
+
+    describe('bigint', () => {
       it('formats a BigInt', () => {
         const actual = converter.formatSimple({
           value: BigInt('100000000000000000000000000000000'),
@@ -113,6 +143,9 @@ describe('PrimitivesFormatter', () => {
           .toEqual('100000000000000000000000000000000')
       })
 
+    })
+
+    describe('illegal values', () => {
       it.each(REJECTED_VALUES)('throws for unsupported values: %s', input => {
         expect(() => converter.formatSimple({
           value: input,
@@ -122,4 +155,5 @@ describe('PrimitivesFormatter', () => {
 
     })
   })
+
 });

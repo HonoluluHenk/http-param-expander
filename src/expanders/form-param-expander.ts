@@ -1,24 +1,21 @@
 import {URITemplateCompatibleEncoder} from '../encoders';
 import {Formatter} from '../formatter';
-import {FOO_RESERVED_CHARACTERS} from '../reserved-characters';
 import {BasicExpander} from './basic-expander';
 
-export const FORM_PARAM_RESERVED_CHARACTERS = FOO_RESERVED_CHARACTERS + '';
-
-export class FormParamExpander extends BasicExpander {
+export class FormParamExpander<Opts = unknown> extends BasicExpander<Opts> {
 
   constructor(formatter: Formatter) {
-    super(
-      {
-        encoder: new URITemplateCompatibleEncoder({reservedCharacters: FORM_PARAM_RESERVED_CHARACTERS}),
-        formatter: formatter,
+    super({
+      encoder: new URITemplateCompatibleEncoder({allowedChars: 'U'}),
+      formatter: formatter,
+      expansion: {
+        first: '?',
+        sep: '&',
+        named: true,
+        ifemp: '=',
+        allow: 'U',
       },
-      'prefix',
-      {
-        variable: '&',
-        assignment: '=',
-        listEntry: ',',
-      });
+    });
   }
 
 }

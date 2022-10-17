@@ -8,11 +8,11 @@ describe('hasDefinedValue', function () {
       .toBe(true);
   })
 
-  it('rejects an empty string', () => {
+  it('accepts an empty string', () => {
     const actual = hasDefinedValue('');
 
     expect(actual)
-      .toBe(false);
+      .toBe(true);
   })
 
   it('rejects null', () => {

@@ -1,66 +1,63 @@
 import {type Encoder} from '../encoder';
+import {AllowedChars} from '../encoders';
 import {type Expander, type Param} from '../expander';
 import {Formatter} from '../formatter';
-import {
-  formatVariablesWithValues,
-  isNullish,
-  join,
-  parseArrayValues,
-  parseObjectValues,
-  VariableNameFormat,
-} from '../util';
+import {isNullish, VariableWithValues} from '../util';
+import {parseArrayValues, parseObjectValues, parseSimpleValue, parseUnsupportedValues} from '../value-parsers';
+import {formatVariablesWithValues} from './format-variables-with-values';
+
+/**
+ * The differing expansion options for expanders defined in RFC 6570
+ *
+ * See: Appendix A, Implementation hints
+ */
+export interface ExpansionOpts {
+  first: string,
+  sep: string,
+  named: boolean,
+  ifemp: string,
+  allow: AllowedChars,
+}
 
 export interface ExpanderConfig {
   readonly encoder: Encoder,
   readonly formatter: Formatter,
-}
-
-export interface Separators {
-  readonly variable: string;
-  readonly assignment: string;
-  readonly listEntry: string;
+  readonly expansion: ExpansionOpts,
 }
 
 export abstract class BasicExpander<Opts = unknown> implements Expander<Opts> {
   protected constructor(
     public readonly config: ExpanderConfig,
-    public readonly variableNameFormat: VariableNameFormat,
-    public readonly separators: Separators,
   ) {
   }
 
-  protected encode(value: string): string {
-    return this.config.encoder.encode(value);
-  }
-
-  protected expandVariablesWithValues(varsWithVals: Array<{ name: string; values: Array<string> }>) {
+  protected expandVariablesWithValues(varsWithVals: VariableWithValues[], namedOverride?: boolean) {
     return formatVariablesWithValues(
       varsWithVals,
-      this.variableNameFormat,
-      this.separators.variable,
-      this.separators.listEntry,
-      this.separators.assignment,
+      namedOverride ?? this.config.expansion.named,
+      this.config.expansion.sep,
+      this.config.expansion.ifemp,
       this.config.encoder,
     );
   }
 
   expand(param: Readonly<Param<unknown, Opts>>): string {
     if (isNullish(param.value)) {
-      return '';
+      return this.expandNullish(param);
     }
 
-    if (this.isSimpleValue(param)) {
+    if (this.valueIsSimple(param)) {
       return this.expandSimple(param);
     }
 
     // FIXME: review: are all names/values encoded everywhere?
     // FIXME: review: call simpleFormatter on array/object values?
 
-    if (Array.isArray(param.value)) {
+    if (this.valueIsArray(param)) {
       return this.expandArray(param);
     }
 
-    if (typeof param.value === 'object') {
+    if (this.valueIsObject(param)) {
       return this.expandObject(param);
     }
 
@@ -68,45 +65,60 @@ export abstract class BasicExpander<Opts = unknown> implements Expander<Opts> {
     return this.expandUnsupportedFallback(param);
   }
 
-  protected isSimpleValue(param: Readonly<Param<unknown, Opts>>): boolean {
+  protected valueIsSimple(param: Readonly<Param<unknown, Opts>>): boolean {
     return this.config.formatter.supports(param);
+  }
+
+  protected valueIsObject(param: Readonly<Param<unknown, Opts>>): param is Param<object, Opts> {
+    return typeof param.value === 'object';
+  }
+
+  protected valueIsArray(param: Param<unknown, Opts>): param is Param<Array<unknown>, Opts> {
+    return Array.isArray(param.value);
+  }
+
+  private expandNullish(_param: Readonly<Param<unknown, Opts>>): string {
+    return '';
   }
 
   // expandSimple is just a special case for an array with one entry
   protected expandSimple(param: Readonly<Param<unknown, Opts>>): string {
-    const varName = this.encode(this.expandName(param));
-    const varValue = this.encode(this.config.formatter.formatSimple(param));
-    const variable = join(this.separators.assignment, varName, varValue);
-
-    const result = `${this.separators.variable}${variable}`;
+    const varsWithVals = parseSimpleValue(param as Param<unknown, Opts>, this.config.formatter);
+    const expanded = this.expandVariablesWithValues(varsWithVals);
+    const result = this.prependFirst(expanded);
 
     return result;
   }
 
-  protected expandName(param: Readonly<Param<unknown, Opts>>): string {
-    switch (this.variableNameFormat) {
-      case 'prefix':
-        return param.name;
-      case 'skip':
-        return '';
-    }
-  }
-
   protected expandArray(param: Readonly<Param<unknown, Opts>>): string {
     const varsWithVals = parseArrayValues(param as Param<unknown[], Opts>, this.config.formatter);
-    const result = this.expandVariablesWithValues(varsWithVals);
+    const expanded = this.expandVariablesWithValues(varsWithVals);
+    const result = this.prependFirst(expanded);
 
     return result;
   }
 
   protected expandObject(param: Readonly<Param<unknown, Opts>>): string {
     const varsWithVals = parseObjectValues(param as Param<object | null, Opts>, this.config.formatter);
-    const result = this.expandVariablesWithValues(varsWithVals);
+    const expanded = this.expandVariablesWithValues(varsWithVals, param.explode || this.config.expansion.named);
+    const result = this.prependFirst(expanded);
 
     return result;
   }
 
   protected expandUnsupportedFallback(param: Readonly<Param<unknown, Opts>>) {
-    return `${this.separators.variable}${this.encode(param.name)}=${this.encode(String(param.value))}`;
+    const varsWithVals = parseUnsupportedValues(param);
+    const expanded = this.expandVariablesWithValues(varsWithVals);
+    const result = this.prependFirst(expanded);
+
+    return result;
+  }
+
+  protected prependFirst(expanded: string) {
+    const result = expanded
+      ? this.config.expansion.first + expanded
+      : '';
+
+    return result;
   }
 }

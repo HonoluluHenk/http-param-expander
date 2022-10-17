@@ -1,5 +1,28 @@
 import {BasicExpander} from './basic-expander';
 
+// noinspection HttpUrlsUsage
+export const TestFixture = {
+  count: ['one', 'two', 'three'],
+  dom: ['example', 'com'],
+  dub: 'me/too',
+  hello: 'Hello World!',
+  half: '50%',
+  var: 'value',
+  who: 'fred',
+  base: 'http://example.com/home/',
+  path: '/foo/bar',
+  list: ['red', 'green', 'blue'],
+  keys: {semi: ';', dot: '.', comma: ','},
+  v: '6',
+  x: '1024',
+  y: '768',
+  empty: '',
+  empty_keys: {},
+  undefNull: null,
+  undefUndefined: undefined,
+} as const;
+export type FixtureName = keyof typeof TestFixture;
+
 export interface Opts {
   enableTestingFormatter: boolean
 }

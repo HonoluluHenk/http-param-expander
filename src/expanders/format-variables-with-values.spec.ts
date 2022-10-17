@@ -1,21 +1,25 @@
 import {Encoder} from '../encoder';
-import {URIComponentEncoder} from '../encoders/uri-component-encoder';
+import {URIComponentEncoder} from '../encoders';
+import {VariableWithValues} from '../util';
 import {formatVariablesWithValues} from './format-variables-with-values';
-import {VariableWithValues} from './variable-with-values';
 
 describe('formatVariablesWithValues', function () {
-  const variableSeparator = ';';
-  const listEntrySeparator = ',';
-  const assignmentSeparator = '=';
-
   const encoder: Encoder = new URIComponentEncoder();
 
-  function format(vars: VariableWithValues[]): string {
+  const named = true;
+  const sep = ',';
+  const ifemp = '=';
+
+  function format(vars: VariableWithValues[], opts?: {
+    named?: boolean,
+    sep?: string,
+    ifemp?: string,
+  }): string {
     return formatVariablesWithValues(
       vars,
-      variableSeparator,
-      listEntrySeparator,
-      assignmentSeparator,
+      opts?.named ?? named,
+      opts?.sep ?? sep,
+      opts?.ifemp ?? ifemp,
       encoder,
     );
   }
@@ -42,7 +46,7 @@ describe('formatVariablesWithValues', function () {
     ]);
 
     expect(actual)
-      .toEqual(';hello=world');
+      .toEqual('hello=world');
   })
 
   it('formats a named entry with multiple values separated by listEntrySeparator', () => {
@@ -51,26 +55,29 @@ describe('formatVariablesWithValues', function () {
     ]);
 
     expect(actual)
-      .toEqual(';hello=henk,ada');
+      .toEqual('hello=henk,ada');
   })
 
-  it('formats a named entry with one empty value to just the name', () => {
+  it('formats a named entry with one empty value appending "ifmep"', () => {
     const actual = format([
-      {name: 'hello', values: ['']},
-    ]);
+        {name: 'hello', values: ['']},
+      ],
+      {ifemp: 'append-if-empty'},
+    );
 
     expect(actual)
-      .toEqual(';hello');
+      .toEqual('helloappend-if-empty');
   })
 
-  it('joins multiple variables', () => {
+  it('joins multiple variables using "sep"', () => {
     const actual = format([
       {name: 'hello', values: ['world']},
       {name: 'it', values: ['works', 'like', 'a', 'charm']},
-    ]);
+    ],
+      {sep: '|'});
 
     expect(actual)
-      .toEqual(';hello=world;it=works,like,a,charm');
+      .toEqual('hello=world|it=works,like,a,charm');
   })
 
   it('includes undefined values', () => {
@@ -79,7 +86,7 @@ describe('formatVariablesWithValues', function () {
     ]);
 
     expect(actual)
-      .toEqual(';it=includes,,empty,,values');
+      .toEqual('it=includes,,empty,,values');
   })
 
   it('encodes name and value', () => {
@@ -88,7 +95,7 @@ describe('formatVariablesWithValues', function () {
     ]);
 
     expect(actual)
-      .toEqual(';foo%2Fbar=20%25');
+      .toEqual('foo%2Fbar=20%25');
   })
 
 });

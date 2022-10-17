@@ -1,31 +1,20 @@
 import {Param} from '../expander';
 import {Formatter} from '../formatter';
-import {PrimitivesFormatter} from '../formatters';
+import {StringFormatter} from '../formatters';
 import {parseObjectValues} from './parse-object-values';
 
 describe('parseObjectValues', () => {
-  const formatter = new PrimitivesFormatter();
+  const formatter = new StringFormatter();
 
   describe('plain', () => {
-    const paramFixture: Param<Record<string, unknown>, unknown> = {
-      name: 'foo',
-      value: {},
-      explode: false,
-      opts: undefined,
-    }
-
     describe('with empty input', () => {
       it.each([
         true,
         false,
       ])('parses into an empty array (explode: %s)', explode => {
-        const param: Param<Record<string, unknown>, unknown> = {
-          ...paramFixture,
-          value: {},
-        }
-
         const input: Param<Record<string, unknown>, unknown> = {
-          ...param,
+          name: 'foo',
+          value: {},
           explode,
         }
 
@@ -39,13 +28,9 @@ describe('parseObjectValues', () => {
         true,
         false,
       ])('parses into an empty array (explode: %s)', explode => {
-        const param: Param<Record<string, unknown> | null, unknown> = {
-          ...paramFixture,
-          value: null,
-        }
-
         const input: Param<Record<string, unknown> | null, unknown> = {
-          ...param,
+          name: 'foo',
+          value: null,
           explode,
         }
 
@@ -57,17 +42,13 @@ describe('parseObjectValues', () => {
     });
 
     describe('with one entry', () => {
-      const param: Param<Record<string, unknown>, unknown> = {
-        ...paramFixture,
-        value: {hello: 'world'},
-      }
-
       it.each([
         [true, [{name: 'hello', values: ['world']}]],
         [false, [{name: 'foo', values: ['hello', 'world']}]],
       ])('parses the value into a singleton array (explode: %s)', (explode, expected) => {
         const input: Param<Record<string, unknown>, unknown> = {
-          ...param,
+          name: 'foo',
+          value: {hello: 'world'},
           explode,
         }
 
@@ -80,7 +61,8 @@ describe('parseObjectValues', () => {
 
     describe('with multiple entries', () => {
       const param: Param<Record<string, unknown>, unknown> = {
-        ...paramFixture,
+        name: 'foo',
+        explode: false,
         value: {hello: 'world', foo: 'bar', Ada: 'Lovelace'},
       }
 
@@ -107,23 +89,31 @@ describe('parseObjectValues', () => {
 
     describe('with undef values', () => {
       const param: Param<Record<string, unknown>, unknown> = {
-        ...paramFixture,
+        name: 'the-name',
+        explode: false,
         value: {
           foo: 'bar',
           empty: '',
           whatever: 'baz',
-          otherEmpty: '',
+          'undefined': undefined,
+          'null': null,
           fruit: 'banana',
         },
       }
 
       it.each([
         [
-          true,
-          [{name: 'foo', values: ['bar']}, {name: 'whatever', values: ['baz']}, {name: 'fruit', values: ['banana']}],
+          true, [
+          {name: 'foo', values: ['bar']},
+          {name: 'empty', values: ['']},
+          {name: 'whatever', values: ['baz']},
+          {name: 'fruit', values: ['banana']},
+        ],
         ],
         [
-          false, [{name: 'foo', values: ['foo', 'bar', 'whatever', 'baz', 'fruit', 'banana']}],
+          false, [
+          {name: 'the-name', values: ['foo', 'bar', 'empty', '', 'whatever', 'baz', 'fruit', 'banana']},
+        ],
         ],
       ])('skips undef values (explode: %s)', (explode, expected) => {
         const input: Param<Record<string, unknown>, unknown> = {
@@ -141,7 +131,7 @@ describe('parseObjectValues', () => {
   });
 
   describe('with custom formatter', () => {
-    const formatter: Formatter = new class implements Formatter<unknown> {
+    const formatter: Formatter = new class implements Formatter {
       public formatNested(param: Readonly<Param<unknown, unknown>>, name: string, value: unknown): string {
         return `nest:${name}->${value}<`;
       }
