@@ -19,10 +19,14 @@ export class PrimitivesFormatter<Opts = unknown> implements Formatter<Opts> {
   }
 
   public formatSimple(param: Readonly<Param<unknown, Opts>>): string | null | undefined {
-    return this.formatNested(param, param.name, param.value);
+    return this.formatValue(param.name, param.value);
   }
 
   public formatNested(param: Readonly<Param<unknown, Opts>>, name: string, value: unknown): string | null | undefined {
+    return this.formatValue(name, value);
+  }
+
+  private formatValue(name: string, value: unknown) {
     switch (typeof value) {
       case 'undefined':
         return this.convertUndefinedToString();
