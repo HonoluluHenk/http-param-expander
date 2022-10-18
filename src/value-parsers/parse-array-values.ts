@@ -3,7 +3,7 @@ import {Formatter} from '../formatter';
 import {checkNonNullish, isNullish, VariableWithValues} from '../util';
 
 export function parseArrayValues<Opts>(
-  param: Readonly<Param<unknown[], Opts>>,
+  param: Param<unknown[], Opts>,
   formatter: Formatter,
 ): VariableWithValues[] {
 

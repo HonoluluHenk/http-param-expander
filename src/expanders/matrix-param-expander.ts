@@ -13,7 +13,6 @@ export class MatrixParamExpander<Opts = unknown> extends BasicExpander<Opts> {
           sep: ';',
           named: true,
           ifemp: '',
-          allow: 'U',
         },
       },
     );

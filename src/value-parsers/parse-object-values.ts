@@ -3,7 +3,7 @@ import {Formatter} from '../formatter';
 import {checkNonNullish, hasDefinedValue, isNullish, VariableWithValues} from '../util';
 
 export function parseObjectValues<Opts>(
-  param: Readonly<Param<object | null, Opts>>,
+  param: Param<object | null, Opts>,
   formatter: Formatter,
 ): VariableWithValues[] {
   const entries = Object.entries(param.value ?? {})

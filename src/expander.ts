@@ -6,6 +6,5 @@ export interface Param<Value, Opts> {
 }
 
 export interface Expander<Opts = unknown> {
-  // FIXME: remove Readonly everywhere on Param
-  expand(param: Readonly<Param<unknown, Opts>>): string | undefined;
+  expand(param: Param<unknown, Opts>): string | undefined;
 }

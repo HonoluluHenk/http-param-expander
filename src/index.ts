@@ -7,3 +7,4 @@ export * from './parameter-style';
 export * from './expander';
 export * from './expanders';
 export * from './reserved-characters';
+export * from './openapi-compat';

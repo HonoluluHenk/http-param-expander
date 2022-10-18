@@ -132,15 +132,15 @@ describe('parseObjectValues', () => {
 
   describe('with custom formatter', () => {
     const formatter: Formatter = new class implements Formatter {
-      public formatNested(param: Readonly<Param<unknown, unknown>>, name: string, value: unknown): string {
+      public formatNested(param: Param<unknown, unknown>, name: string, value: unknown): string {
         return `nest:${name}->${value}<`;
       }
 
-      public formatSimple(param: Readonly<Param<unknown, unknown>>): string {
+      public formatSimple(param: Param<unknown, unknown>): string {
         return `simple:${param.name}->${param.value}<`;
       }
 
-      public supports(param: Readonly<Param<unknown, unknown>>): boolean {
+      public supports(param: Param<unknown, unknown>): boolean {
         return param.name === 'ok';
       }
     }

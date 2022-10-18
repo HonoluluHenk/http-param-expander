@@ -13,7 +13,6 @@ export class FormParamExpander<Opts = unknown> extends BasicExpander<Opts> {
         sep: '&',
         named: true,
         ifemp: '=',
-        allow: 'U',
       },
     });
   }

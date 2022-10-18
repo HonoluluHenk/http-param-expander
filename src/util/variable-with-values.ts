@@ -1,5 +1,4 @@
 export interface VariableWithValues {
-  name: string,
-  values: Array<string>
+  readonly name: string,
+  readonly values: Array<string>
 }
-

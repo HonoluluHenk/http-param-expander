@@ -1,5 +1,5 @@
 import {Encoder} from '../encoder';
-import {isNullish, isUndefArray, VariableWithValues} from '../util';
+import {isNullish, VariableWithValues} from '../util';
 
 export function formatVariablesWithValues(
   vars: VariableWithValues[],
@@ -10,7 +10,7 @@ export function formatVariablesWithValues(
 ): string {
 
   const result = vars
-    .map(removeNullishValues)
+    .map(removeNullishValuesFromVariable)
     .filter(onlyVariablesWithValues)
     .map(v => formatVariable(v, named, ifemp, encoder))
     .join(sep);
@@ -18,7 +18,7 @@ export function formatVariablesWithValues(
   return result;
 }
 
-function removeNullishValues(variable: VariableWithValues): VariableWithValues {
+function removeNullishValuesFromVariable(variable: VariableWithValues): VariableWithValues {
   return {
     name: variable.name,
     values: variable.values
@@ -27,7 +27,7 @@ function removeNullishValues(variable: VariableWithValues): VariableWithValues {
 }
 
 function onlyVariablesWithValues(variable: VariableWithValues): boolean {
-  return !isUndefArray(variable.values);
+  return variable.values.length !== 0;
 }
 
 function formatVariable(
@@ -37,19 +37,22 @@ function formatVariable(
   encoder: Encoder,
 ): string {
 
-  const joinedValues = param.values
+  const varValue = param.values
     .map(v => encoder.encode(v))
     .join(',');
 
   if (named) {
     const varName = encoder.encode(param.name);
-    if (joinedValues) {
-      return varName + '=' + joinedValues;
-    } else {
-      return varName + ifemp;
-    }
+    return formatNamed(varName, varValue, ifemp);
   } else {
-    return joinedValues;
+    return varValue;
   }
 }
 
+function formatNamed(name: string, value: string, ifemp: string) {
+  if (value) {
+    return `${name}=${value}`;
+  } else {
+    return `${name}${ifemp}`;
+  }
+}

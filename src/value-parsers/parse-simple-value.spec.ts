@@ -15,16 +15,16 @@ describe('parse-simple-vaplue', () => {
   }
 
   class FixtureFormatter implements Formatter {
-    public supports(_param: Readonly<Param<unknown, unknown>>): boolean {
+    public supports(_param: Param<unknown, unknown>): boolean {
       return true;
     }
 
-    public formatSimple(param: Readonly<Param<unknown, unknown>>): string | null | undefined {
+    public formatSimple(param: Param<unknown, unknown>): string | null | undefined {
       return `formatted: ${String(param.value)}`;
     }
 
     public formatNested(
-      _param: Readonly<Param<unknown, unknown>>,
+      _param: Param<unknown, unknown>,
       _name: string,
       _value: unknown,
     ): string | null | undefined {

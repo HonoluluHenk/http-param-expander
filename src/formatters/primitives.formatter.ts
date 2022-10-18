@@ -10,7 +10,7 @@ export class PrimitivesFormatter<Opts = unknown> implements Formatter<Opts> {
     'bigint',
   ]);
 
-  public supports(param: Readonly<Param<unknown, Opts>>): boolean {
+  public supports(param: Param<unknown, Opts>): boolean {
     const valueType = typeof param.value;
 
     const result = PrimitivesFormatter.supportedTypes.has(valueType);
@@ -18,11 +18,11 @@ export class PrimitivesFormatter<Opts = unknown> implements Formatter<Opts> {
     return result;
   }
 
-  public formatSimple(param: Readonly<Param<unknown, Opts>>): string | null | undefined {
+  public formatSimple(param: Param<unknown, Opts>): string | null | undefined {
     return this.formatValue(param.name, param.value);
   }
 
-  public formatNested(param: Readonly<Param<unknown, Opts>>, name: string, value: unknown): string | null | undefined {
+  public formatNested(param: Param<unknown, Opts>, name: string, value: unknown): string | null | undefined {
     return this.formatValue(name, value);
   }
 
