@@ -3,4 +3,4 @@ set -Eeup
 
 cd example/example-app
 npm install
-npm run test -- --watch=false
+npm run test -- --watch=false --browsers=ChromeHeadless
