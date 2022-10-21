@@ -4,6 +4,6 @@
     "outDir": "build/spec"
   },
   "include": [
-    "src/**/*.spec.ts"
+    "src/lib/**/*.spec.ts"
   ]
 }

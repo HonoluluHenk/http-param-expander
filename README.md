@@ -72,11 +72,11 @@ console.log(expanded);
 
 Available expanders:
 
-* [FormParamExpander](src/expanders/form-param-expander.ts)
-* [LabelParamExpander](src/expanders/label-param-expander.ts)
-* [MatrixParamExpander](src/expanders/matrix-param-expander.ts)
-* [SimpleParamExpander](src/expanders/simple-param-expander.ts)
-* [FormParamExpander](src/expanders/multi-style-expander.ts) (delegates to one of the above)
+* [FormParamExpander](src/lib/expanders/form-param-expander.ts)
+* [LabelParamExpander](src/lib/expanders/label-param-expander.ts)
+* [MatrixParamExpander](src/lib/expanders/matrix-param-expander.ts)
+* [SimpleParamExpander](src/lib/expanders/simple-param-expander.ts)
+* [FormParamExpander](src/lib/expanders/multi-style-expander.ts) (delegates to one of the above)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

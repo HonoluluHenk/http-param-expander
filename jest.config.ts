@@ -71,6 +71,7 @@ export default {
 
   // A path to a module which exports an async function that is triggered once before all test suites
   // globalSetup: undefined,
+  globalSetup: "<rootDir>/src/global-setup.ts",
 
   // A path to a module which exports an async function that is triggered once after all test suites
   // globalTeardown: undefined,
@@ -161,6 +162,9 @@ export default {
   // roots: [
   //     '<rootDir>/src',
   // ],
+  roots: [
+      '<rootDir>/src',
+  ],
 
   // Allows you to use a custom runner instead of Jest's default test runner
   // runner: "jest-runner",

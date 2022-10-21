@@ -4,10 +4,10 @@
     "outDir": "build/lib"
   },
   "include": [
-    "src/**/*.ts"
+    "src/lib/**/*.ts"
   ],
   "exclude": [
-    "src/**/*.spec.ts",
-    "src/**/*.spec-helper.ts"
+    "src/lib/**/*.spec.ts",
+    "src/lib/**/*.spec-helper.ts"
   ]
 }
